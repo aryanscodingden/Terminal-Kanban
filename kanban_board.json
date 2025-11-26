@@ -1,0 +1,36 @@
+{
+  "To Do": [
+    {
+      "title": "Fix API bug",
+      "meta": "#backend #urgent"
+    },
+    {
+      "title": "Email client",
+      "meta": "#followup"
+    },
+    {
+      "title": "hello world",
+      "meta": ""
+    },
+    {
+      "title": "hello",
+      "meta": ""
+    }
+  ],
+  "Doing": [
+    {
+      "title": "Write Report",
+      "meta": "#docs"
+    },
+    {
+      "title": "hello",
+      "meta": ""
+    }
+  ],
+  "Done": [
+    {
+      "title": "Initial setup",
+      "meta": "#env"
+    }
+  ]
+}

@@ -5,11 +5,11 @@ from screens.board import BoardScreen
 class KanbanApp(App):
     """The main App controller."""
     
-    css_path = "kanban.tcss"
+    CSS_PATH = "kanban.tcss"
     
     SCREENS = {
-    "menu": MenuScreen,
-    "board": BoardScreen,
+        "menu": MenuScreen,
+        "board": BoardScreen,
     }
     
     def on_mount(self) -> None:
