@@ -89,6 +89,10 @@ class BoardScreen(Screen):
 
     dialog_open = reactive(False)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.can_focus = True
+
     def compose(self) -> ComposeResult:
         self.todo = Column("To Do", "todo")
         self.doing = Column("Doing", "doing")
@@ -118,6 +122,7 @@ class BoardScreen(Screen):
     async def on_mount(self) -> None:
         self.columns: List[Column] = [self.todo, self.doing, self.done]
         self.selected_card: Optional[Card] = None
+        self.set_focus(self)
         self.focus()
         self._dialog_mode: Optional[str] = None
         self._dialog_target_column: Optional[Column] = None
@@ -131,6 +136,9 @@ class BoardScreen(Screen):
             self.query_one("#board").focus()
         except Exception:
             pass
+
+    async def on_key(self, event):
+        print("KEY:", event.key)
 
     def select_card(self, card: Optional[Card]) -> None:
         if self.selected_card:
