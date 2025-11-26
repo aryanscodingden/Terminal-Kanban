@@ -19,18 +19,22 @@
   ],
   "Doing": [
     {
-      "title": "Write Report",
-      "meta": "#docs"
-    },
-    {
-      "title": "hello",
-      "meta": ""
+      "title": "123",
+      "meta": "123"
     }
   ],
   "Done": [
     {
       "title": "Initial setup",
       "meta": "#env"
+    },
+    {
+      "title": "123",
+      "meta": ""
+    },
+    {
+      "title": "hello",
+      "meta": ""
     }
   ]
 }
