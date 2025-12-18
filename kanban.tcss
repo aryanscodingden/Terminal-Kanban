@@ -3,26 +3,26 @@ Screen {
     align: center middle;
 }
 
-#menu-controller {
+#menu-container {
     width: 50;
     height: auto;
     border: heavy #7aa2f7;
-    background: #24283b
+    background: #24283b;
     padding: 2;
 }
 
 .title {
-    .text-align: center;
+    text-align: center;
     color: #9ece6a;
     text-style: bold;
     margin-bottom: 2;
 }
 
 Button {
-    width: 100% 
+    width: 100%;
     margin-bottom: 1;
     border: none; 
-    background: #414867
+    background: #414867;
     color: #c0caf5;
 }
 
@@ -34,7 +34,7 @@ Button:hover {
 }
 
 BoardScreen {
-    background: #1e1e1e
+    background: #1e1e1e;
 }
 
 #placeholder-text {
@@ -54,18 +54,98 @@ BoardScreen {
     height: auto;
     width: auto; 
     content-align: center middle;
-    gap: 2;
 }
 
 .title {
     text-align: center; 
     margin-bottom: 2;
-    color: $accent;
-    bold: true;
+    color: #9ece6a;
+    text-style: bold;
 }
 
 .menu-item {
     text-align: center; 
     padding: 1 2;
     width: 40;
+}
+
+/* Board styles */
+#board-container {
+    width: 100%;
+    height: 100%;
+}
+
+.column {
+    width: 1fr;
+    height: 100%;
+    border: solid #7aa2f7;
+    background: #24283b;
+    margin: 0 1;
+}
+
+.column-header {
+    text-align: center;
+    background: #414867;
+    color: #9ece6a;
+    text-style: bold;
+    padding: 1;
+}
+
+.column-body {
+    height: 1fr;
+    padding: 1;
+    overflow-y: auto;
+}
+
+.card {
+    background: #1a1b26;
+    color: #c0caf5;
+    border: solid #414867;
+    padding: 1 2;
+    margin-bottom: 1;
+}
+
+.card.selected {
+    border: solid #7aa2f7;
+    background: #2a2b3d;
+    color: #e0af68;
+    text-style: bold;
+}
+
+/* Add card dialog */
+#add-dialog {
+    width: 50;
+    height: auto;
+    border: heavy #7aa2f7;
+    background: #24283b;
+    padding: 2;
+    layer: overlay;
+    offset: 50% 50%;
+}
+
+#add-dialog.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+#dialog-title {
+    text-align: center;
+    color: #9ece6a;
+    text-style: bold;
+    margin-bottom: 1;
+}
+
+#card-input {
+    width: 100%;
+    margin-bottom: 1;
+}
+
+#dialog-buttons {
+    width: 100%;
+    height: auto;
+}
+
+#dialog-buttons Button {
+    width: 1fr;
+    margin: 0 1;
 }
