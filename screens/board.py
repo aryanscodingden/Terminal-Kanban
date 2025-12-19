@@ -197,7 +197,19 @@ class BoardScreen(Screen):
             self.query_one("#add-dialog").add_class("hidden")
             self.set_focus(None)
     
-    def on_input_submitted(self, event: Input.Submitted):
+    async def on_input_submitted(self, event: Input.Submitted):
         if event.input.id == "card-input":
-            btn_add = self.query_one("#btn-add", Button)
-            self.on_button_pressed(Button.Pressed(btn_add))
+            input_widget = self.query_one("#card-input", Input)
+            task_name = input_widget.value.strip()
+            
+            if task_name:
+                new_card = Card(task_name)
+                current_col = self.columns[self.selected_column_idx]
+                await current_col.add_card(new_card)
+                self.selected_card_idx = len(current_col.cards) - 1
+                self._update_selection()
+            
+            input_widget.value = ""
+            self.query_one("#add-dialog").add_class("hidden")
+            self.set_focus(None)
+            
