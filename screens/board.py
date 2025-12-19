@@ -23,7 +23,6 @@ class Column(Vertical):
     
     async def add_card(self, card: Card):
         self.cards.append(card)
-        # Only mount if the column is already composed
         try:
             body = self.query_one(f"#{self.id}-body")
             await body.mount(card)
@@ -56,8 +55,6 @@ class BoardScreen(Screen):
     
     def compose(self) -> ComposeResult:
         yield Header()
-        
-        # Create three columns
         self.todo_col = Column("To Do", id="todo")
         self.doing_col = Column("Doing", id="doing")
         self.done_col = Column("Done", id="done")
@@ -71,7 +68,6 @@ class BoardScreen(Screen):
             id="board-container"
         )
         
-        # Add card dialog
         yield Container(
             Label("Add New Card", id="dialog-title"),
             Input(placeholder="Enter task name", id="card-input"),
@@ -87,7 +83,6 @@ class BoardScreen(Screen):
         yield Footer()
     
     async def on_mount(self):
-        # Add sample cards after mount
         await self.todo_col.add_card(Card("Task 1: Setup project"))
         await self.todo_col.add_card(Card("Task 2: Design UI"))
         await self.doing_col.add_card(Card("Task 3: Implement features"))
@@ -96,12 +91,10 @@ class BoardScreen(Screen):
         self._update_selection()
     
     def _update_selection(self):
-        # Deselect all cards
         for col in self.columns:
             for card in col.cards:
                 card.deselect()
         
-        # Select current card
         current_col = self.columns[self.selected_column_idx]
         if current_col.cards:
             self.selected_card_idx = min(self.selected_card_idx, len(current_col.cards) - 1)
@@ -123,41 +116,47 @@ class BoardScreen(Screen):
             self._update_selection()
     
     async def action_move_left(self):
-        if self.selected_card and self.selected_column_idx > 0:
-            current_col = self.columns[self.selected_column_idx]
-            new_col = self.columns[self.selected_column_idx - 1]
-            
-            # Remove card from DOM and current column
-            card_to_move = self.selected_card
-            if card_to_move in current_col.cards:
-                current_col.cards.remove(card_to_move)
-            await card_to_move.remove()
-            
-            # Create new card with same text and add to new column
-            new_card = Card(card_to_move.text)
-            await new_col.add_card(new_card)
-            
-            self.selected_column_idx -= 1
-            self.selected_card_idx = len(new_col.cards) - 1
-            self._update_selection()
+       if self.selected_column_idx > 0:
+           if self.selected_card:
+               current_col = self.columns[self.selected_column_idx]
+               new_col = self.columns[self.selected_column_idx - 1]
+               
+               card_to_move = self.selected_card
+               if card_to_move in current_col.cards:
+                   current_col.cards.remove(card_to_move)
+               await card_to_move.remove()
+               
+               new_card = Card(card_to_move.text)
+               await new_col.add_card(new_card)
+               
+               self.selected_column_idx -= 1
+               self.selected_card_idx = len(new_col.cards) - 1
+           else:
+               self.selected_column_idx -= 1
+               self.selected_card_idx = 0
+               
+           self._update_selection()
     
     async def action_move_right(self):
-        if self.selected_card and self.selected_column_idx < len(self.columns) - 1:
-            current_col = self.columns[self.selected_column_idx]
-            new_col = self.columns[self.selected_column_idx + 1]
-            
-            # Remove card from DOM and current column
-            card_to_move = self.selected_card
-            if card_to_move in current_col.cards:
-                current_col.cards.remove(card_to_move)
-            await card_to_move.remove()
-            
-            # Create new card with same text and add to new column
-            new_card = Card(card_to_move.text)
-            await new_col.add_card(new_card)
-            
-            self.selected_column_idx += 1
-            self.selected_card_idx = len(new_col.cards) - 1
+        if self.selected_column_idx < len(self.columns) - 1:
+            if self.selected_card:
+                current_col = self.columns[self.selected_column_idx]
+                new_col = self.columns[self.selected_column_idx + 1]
+                
+                card_to_move = self.selected_card
+                if card_to_move in current_col.cards:
+                    current_col.cards.remove(card_to_move)
+                await card_to_move.remove()
+                
+                new_card = Card(card_to_move.text)
+                await new_col.add_card(new_card)
+                
+                self.selected_column_idx += 1
+                self.selected_card_idx = len(new_col.cards) - 1
+            else:
+                self.selected_column_idx += 1
+                self.selected_card_idx = 0
+                
             self._update_selection()
     
     async def action_delete_card(self):
@@ -199,7 +198,6 @@ class BoardScreen(Screen):
             self.set_focus(None)
     
     def on_input_submitted(self, event: Input.Submitted):
-        # Allow pressing Enter to add card
         if event.input.id == "card-input":
             btn_add = self.query_one("#btn-add", Button)
             self.on_button_pressed(Button.Pressed(btn_add))
