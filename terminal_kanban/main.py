@@ -15,6 +15,10 @@ class KanbanApp(App):
     def on_mount(self) -> None:
         self.push_screen("menu")
         
-if __name__ == "__main__":
+        
+def run():
     app = KanbanApp()
     app.run()
+        
+if __name__ == "__main__":
+    run()
